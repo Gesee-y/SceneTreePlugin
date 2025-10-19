@@ -12,7 +12,9 @@ using Cruise
 
 @Notifyer _ON_CHILD_ADDED(n1, n2)
 @Notifyer _ON_CHILD_REMOVED(n1, n2)
-@Notifyer _ON_NODE_REMOVED(n)
+@Notifyer _EXIT_TREE(n)
+@Notifyer _ON_READY(n)
+@Notifyer _ENTER_TREE(n)
 
 const SCENETREEPLUGIN = CRPlugin()
 const TREE = ObjectTree()
@@ -51,20 +53,22 @@ NodeTree.get_tree() = TREE
 
 function addchild(n1,n2)
 	add_child(n1, n2)
+	_ENTER_TREE.emit = n2
 	ready!(n2)
+	_ON_READY.emit = n2
 	_ON_CHILD_ADDED.emit = n1,n2
 end
 
 function deletenode(n)
 	remove_node(TREE, n)
-	_ON_NODE_REMOVED.emit = n
+	_EXIT_TREE.emit = n
 	destroy!(n)
 end
 
 function deletechild(n, n2)
 	remove_child(n, n2)
 	_ON_CHILD_REMOVED.emit = n, n2
-	_ON_NODE_REMOVED.emit = n2
+	_EXIT_TREE.emit = n2
 	destroy!(n)
 end
 deletechild(n, i::Int) = deletechild(n, get_children(n)[i])
