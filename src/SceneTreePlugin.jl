@@ -2,9 +2,9 @@
 ###################################################### SCENETREE PLUGIN ###############################################
 #######################################################################################################################
 
-module RECSPlugin
+module SceneTreePlugin
 
-export RECSPLUGIN
+export SCENETREEPLUGIN
 
 using Reexport
 using Cruise
